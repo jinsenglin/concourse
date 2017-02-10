@@ -1,0 +1,20 @@
+resources:
+- name: my-product
+  type: git
+  source:
+    uri: https://github.com/jinsenglin/concourse.git
+    branch: master
+- name: my-product-image
+  type: docker-image
+  source:
+    repository: jimlintw/lab
+    username: {{docker-registry-username}}
+    password: {{docker-registry-password}}
+
+jobs:
+- name: hello-docker-image
+  plan:
+  - get: my-product
+    trigger: true
+  - put: my-product-image
+    params: {build: my-product}
