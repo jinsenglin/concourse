@@ -1,0 +1,27 @@
+resources:
+- name: version
+  type: semver
+  source:
+    driver: s3
+    initial_version: 1.0.0
+    bucket: hello-semver
+    key: hello-semver
+    access_key_id: b11e289d175c4950bbb89a5ef6bb7332
+    secret_access_key: a95aecd36d424ade87111d7598050f39
+    endpoint: http://172.18.161.7:8080
+    disable_ssl: true
+
+jobs:
+- name: hello-s3
+  plan:
+  - task: a-thing-that-needs-a-version
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: ubuntu}
+      run:
+        path: echo
+        args: ["Hello, world!"]   
+  - put: version
+    params: {bump: minor}

@@ -1,0 +1,29 @@
+resources:
+- name: version
+  type: semver
+  source:
+    driver: swift
+    initial_version: 1.0.0
+    openstack:
+      container: hello-semver
+      item_name: hello-semver
+      region: RegionOne
+      identity_endpoint: http://172.18.161.7:8080
+      username: admin
+      password: nomoresecret
+      tenant_name: admin
+
+jobs:
+- name: hello-swift
+  plan:
+  - task: a-thing-that-needs-a-version
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: ubuntu}
+      run:
+        path: echo
+        args: ["Hello, world!"]   
+  - put: version
+    params: {bump: minor}

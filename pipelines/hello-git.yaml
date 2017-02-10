@@ -1,0 +1,14 @@
+resources:
+- name: my-product
+  type: git
+  source:
+    uri: https://github.com/jinsenglin/concourse.git
+    branch: master
+
+jobs:
+- name: hello-git
+  plan:
+  - get: my-product
+    trigger: true
+  - task: a-thing-that-needs-a-version
+    file: my-product/unit.yml
