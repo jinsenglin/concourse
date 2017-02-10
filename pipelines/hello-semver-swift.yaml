@@ -14,7 +14,7 @@ resources:
       tenant_name: admin
 
 jobs:
-- name: hello-swift
+- name: hello-semver-swift
   plan:
   - task: a-thing-that-needs-a-version
     config:

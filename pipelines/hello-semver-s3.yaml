@@ -12,7 +12,7 @@ resources:
     disable_ssl: true
 
 jobs:
-- name: hello-s3
+- name: hello-semver-s3
   plan:
   - task: a-thing-that-needs-a-version
     config:
