@@ -1,0 +1,24 @@
+resources:
+- name: my-product
+  type: git
+  source:
+    uri: https://github.com/jinsenglin/concourse.git
+    branch: master
+- name: my-product-box
+  type: vagrant-cloud
+  source:
+    access_token: {{vagrant-cloud-token}}
+    username: {{vagrant-cloud-username}}
+    box: example
+    provider: virtualbox
+
+jobs:
+- name: hello-vagrant-cloud
+  plan:
+  - get: my-product
+    trigger: true
+  - put: my-product-box
+    params:
+      version: my-product/box.version
+      url: my-product/box.url
+      release: true
