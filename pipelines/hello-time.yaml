@@ -1,0 +1,20 @@
+resources:
+- name: 30s
+  type: time
+  source:
+    interval: 30s
+
+jobs:
+- name: hello-time
+  plan:
+  - get: 30s
+    trigger: true
+  - task: say-time
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: ubuntu}
+      run:
+        path: echo
+        args: ["Hello, world!"]
