@@ -1,0 +1,43 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: centos
+    tag: '7'
+    
+run:
+  path: sh
+  args:
+  - -exc
+  - |
+    whoami
+    env
+    # type which
+    # type date
+    # type touch
+    # type cat
+    # type echo
+    # type ls
+    # type cd
+    # type sed
+    # type grep
+    # type awk
+    # type wget
+    # type tar
+    # type unzip
+    # type md5sum
+    # type mktemp
+    # type printf
+    #
+    # bash --version
+    # type curl
+    # type ssh
+    # type git
+    # type jq
+    #
+    # python --version
+    # pip --version
+    # virtualenv --version
+    # fab --version
