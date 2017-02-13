@@ -30,12 +30,16 @@ run:
     # type md5sum
     # type mktemp
     # type printf
+    # type tee
     #
     # bash --version
     # type curl
     # type ssh
+    # type ssh-add
+    # type ssh-agent
     # type git
     # type jq
+    # type tree
     #
     # python --version
     # pip --version
