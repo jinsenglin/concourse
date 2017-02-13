@@ -1,0 +1,30 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: python
+    tag: '2.7.12'
+
+inputs:
+- name: concourse
+
+params:
+  gitlab:
+  token:
+  group:
+  nsid:
+  module: python-openstackclient
+    
+run:
+  path: sh
+  args:
+  - -exc
+  - |
+    curl --header "PRIVATE-TOKEN: ${token}" -X POST "${gitlab}/api/v3/projects?name=upstream-mirror-${module}&namespace_id=${nsid}"
+    curl --header "PRIVATE-TOKEN: ${token}" -X PUT "${gitlab}/api/v3/projects/${group}%2Fupstream-mirror-${module}?visibility_level=10"
+    curl --header "PRIVATE-TOKEN: ${token}" -X POST "${gitlab}/api/v3/projects?name=upstream-fork-${module}&namespace_id=${nsid}"
+    curl --header "PRIVATE-TOKEN: ${token}" -X PUT "${gitlab}/api/v3/projects/${group}%2Fupstream-fork-${module}?visibility_level=10"
+    curl --header "PRIVATE-TOKEN: ${token}" -X POST "${gitlab}/api/v3/projects?name=distro-module-${module}&namespace_id=${nsid}"
+    curl --header "PRIVATE-TOKEN: ${token}" -X PUT "${gitlab}/api/v3/projects/${group}%2Fdistro-module-${module}?visibility_level=10"
