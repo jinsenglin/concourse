@@ -1,0 +1,27 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: python
+    tag: '2.7.12'
+
+inputs:
+- name: concourse
+
+params:
+  key_file: concourse/to/key_file
+    
+run:
+  path: sh
+  args:
+  - -exc
+  - |
+    env
+    ls
+    # git clone --mirror https://github.com/openstack/swift.git swift
+    # cd swift
+    # git remote set-url --push origin git@172.16.100.91:ccos/upstream-mirror-swift.git
+    # git fetch -p origin
+    # git push --mirror
