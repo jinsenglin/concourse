@@ -11,17 +11,22 @@ inputs:
 - name: concourse
 
 params:
-  key_file: concourse/to/key_file
+  key_file: concourse/id_rsa
+  ssh_config_file: concourse/ssh_config_file
+  module: swift
     
 run:
   path: sh
   args:
   - -exc
   - |
-    env
-    ls
-    # git clone --mirror https://github.com/openstack/swift.git swift
-    # cd swift
-    # git remote set-url --push origin git@172.16.100.91:ccos/upstream-mirror-swift.git
-    # git fetch -p origin
-    # git push --mirror
+    mkdir ~/.ssh/
+    chmod 700 ~/.ssh/
+    cp $key_file ~/.ssh/
+    cp $ssh_config_file ~/.ssh/config
+    #
+    git clone --mirror https://github.com/openstack/$module.git $module
+    cd $module
+    git remote set-url --push origin git@gitserver:ccos/upstream-mirror-$module.git
+    git fetch -p origin
+    git push --mirror
