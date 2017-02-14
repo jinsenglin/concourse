@@ -1,0 +1,36 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: python
+    tag: '2.7.12'
+
+inputs:
+- name: concourse
+
+params:
+  key_file: concourse/id_rsa
+  ssh_config_file: concourse/ssh_config_file
+  module: swift
+  src_branch: newton
+  dest_branch: newton
+    
+run:
+  path: sh
+  args:
+  - -exc
+  - |
+    mkdir ~/.ssh/
+    chmod 700 ~/.ssh/
+    cp $key_file ~/.ssh/
+    cp $ssh_config_file ~/.ssh/config
+    #
+    git clone --recursive git@gitserver:ccos/distro-module-$module.git $module
+    cd $module
+    git checkout -b $dest_branch master
+    git submodule add git@gitserver:ccos/upstream-fork-$module.git $module
+    cd $module && git checkout $src_branch && cd ..
+    git commit -m "add submodule for branch $dest_branch"
+    git push origin $dest_branch
