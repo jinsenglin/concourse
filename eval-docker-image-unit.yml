@@ -14,34 +14,38 @@ run:
   - |
     whoami
     env
-    # type which
-    # type date
-    # type touch
-    # type cat
-    # type echo
-    # type ls
-    # type cd
-    # type sed
-    # type grep
-    # type awk
-    # type wget
-    # type tar
-    # type unzip
-    # type md5sum
-    # type mktemp
-    # type printf
-    # type tee
+    #type which
+    #type date
+    #type touch
+    #type cat
+    #type echo
+    #type ls
+    #type cd
+    #type sed
+    #type grep
+    #type awk
+    #type wget
+    #type tar
+    #type unzip
+    #type md5sum
+    #type mktemp
+    #type printf
+    #type tee
     #
-    # bash --version
-    # type curl
-    # type ssh
-    # type ssh-add
-    # type ssh-agent
-    # type git
-    # type jq
-    # type tree
+    #bash --version
+    #type curl
+    #type ssh
+    #type ssh-add
+    #type ssh-agent
+    #type git
+    #type jq
+    #type tree
     #
-    # python --version
-    # pip --version
-    # virtualenv --version
-    # fab --version
+    #python --version
+    #pip --version
+    #pip list
+    #virtualenv --version
+    #fab --version
+    #ansible --version
+    #ansible-playbook --version
+    #ansible-galaxy --version
