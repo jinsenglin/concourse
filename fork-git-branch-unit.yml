@@ -1,0 +1,34 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: python
+    tag: '2.7.12'
+
+inputs:
+- name: concourse
+
+params:
+  key_file: concourse/id_rsa
+  ssh_config_file: concourse/ssh_config_file
+  module: swift
+  src_branch: stable/newton
+  dest_branch: newton
+    
+run:
+  path: sh
+  args:
+  - -exc
+  - |
+    mkdir ~/.ssh/
+    chmod 700 ~/.ssh/
+    cp $key_file ~/.ssh/
+    cp $ssh_config_file ~/.ssh/config
+    #
+    git clone -b $src_branch git@gitserver:ccos/upstream-mirror-$module.git $module
+    cd $module
+    git remote set-url --push origin git@gitserver:ccos/upstream-fork-$module.git
+    git checkout $src_branch
+    git push origin $src_branch:$dest_branch
