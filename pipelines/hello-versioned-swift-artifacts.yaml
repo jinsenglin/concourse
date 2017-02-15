@@ -1,0 +1,123 @@
+resource_types:
+- name: swift
+  type: docker-image
+  source: {repository: databus23/concourse-swift-resource}
+
+resources:
+- name: my-product
+  type: git
+  source:
+    uri: https://github.com/jinsenglin/concourse.git
+    branch: master
+
+- name: version
+  type: semver
+  source:
+    driver: swift
+    initial_version: 0.0.0
+    openstack:
+      container: my-product-pipeline-artifacts
+      item_name: current-version 
+      identity_endpoint: http://172.18.161.7:8080
+      region: RegionOne
+      tenant_name: admin
+      username: admin
+      password: nomoresecret
+
+- name: my-product-rc
+  type: swift
+  source:
+    container: my-product-pipeline-artifacts
+    regex: my-product-(.*).tgz
+    auth_url: http://172.18.161.7:5000/v3
+    domain: default
+    tenant: admin
+    username: admin
+    api_key: nomoresecret
+    disable_tls_verify: true
+
+- name: my-product-final
+  type: swift
+  source:
+    container: my-product
+    regex: my-product-(.*).tgz
+    auth_url: http://172.18.161.7:5000/v3
+    domain: default
+    tenant: admin
+    username: admin
+    api_key: nomoresecret
+    disable_tls_verify: true
+
+jobs:
+- name: unit
+  plan:
+  - get: my-product
+    trigger: true
+  - task: unit
+    file: my-product/ci/unit.yml
+
+- name: build-rc
+  serial_groups: [version]
+  plan:
+  - get: my-product
+    passed: [unit]
+    trigger: true
+  - get: version
+    params: {pre: rc}
+  - task: build-artifact
+    file: my-product/ci/build-artifact.yml
+  - put: my-product-rc
+    params: {file: built-artifact/my-product-*.tgz}
+  - put: version
+    params: {file: version/number}
+
+- name: integration
+  serial: true
+  plan:
+  - get: my-product-rc
+    trigger: true
+    passed: [build-rc]
+  - get: my-product
+    passed: [build-rc]
+  - task: integration
+    file: my-product/ci/integration.yml
+    params:
+      API_ENDPOINT: {{integration-api-endpoint}}
+      ACCESS_KEY: {{integration-access-key}}
+
+- name: shipit
+  serial_groups: [version]
+  plan:
+  - get: my-product-rc
+    passed: [integration]
+  - get: my-product
+    passed: [integration]
+  - get: version
+    params: {bump: final}
+  - task: promote-to-final
+    file: my-product/ci/promote-to-final.yml
+  - put: my-product-final
+    params: {file: built-product/my-product-*.tgz}
+  - put: version
+    params: {file: version/number}
+
+- name: major
+  serial_groups: [version]
+  plan:
+  - put: version
+    params: {bump: major, pre: rc}
+
+- name: minor
+  serial_groups: [version]
+  plan:
+  - put: version
+    params: {bump: minor, pre: rc}
+
+- name: patch
+  serial_groups: [version]
+  plan:
+  - get version
+    passed: [shipit]
+    trigger: true
+  - put version
+    params: {bump: patch, pre: rc}
