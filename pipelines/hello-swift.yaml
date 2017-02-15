@@ -1,0 +1,50 @@
+resource_types:
+- name: swift
+  type: docker-image
+  source: {repository: databus23/concourse-swift-resource}
+
+resources:
+- name: something
+  type: swift
+  source:
+    username: admin
+    api_key: nomoresecret
+    domain: default
+    auth_url: http://172.18.161.7:5000/v3
+    container: hello-swift
+    regex: file-([.0-9])+\.tgz
+
+jobs:
+- name: hello-swift
+  plan:
+  - task: touch-task
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: ubuntu}
+      outputs:
+      - name: out
+      run:
+        path: sh
+        args:
+        - -exec
+        - |
+          touch out/file-1.tgz
+  - task: ls-task
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: ubuntu}
+      inputs:
+      - name: out
+      run:
+        path: sh
+        args:
+        - -exec
+        - |
+          ls out 
+  - put: something
+    params:
+      from: out/file-([.0-9])+\.tgz
