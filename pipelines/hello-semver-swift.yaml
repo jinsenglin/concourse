@@ -8,9 +8,10 @@ resources:
       container: hello-semver
       item_name: hello-semver
       region: RegionOne
-      identity_endpoint: http://172.18.161.7:8080
+      identity_endpoint: http://172.18.161.7:5000/v3
       username: admin
       password: nomoresecret
+      domain_name: default
       tenant_name: admin
 
 jobs:
