@@ -7,12 +7,14 @@ resources:
 - name: something
   type: swift
   source:
+    auth_url: http://172.18.161.7:5000/v3
+    domain: default
+    tenant: admin
     username: admin
     api_key: nomoresecret
-    domain: default
-    auth_url: http://172.18.161.7:5000/v3
     container: hello-swift
     regex: file-([.0-9])+\.tgz
+    disable_tls_verify: true
 
 jobs:
 - name: hello-swift
