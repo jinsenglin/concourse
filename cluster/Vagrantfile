@@ -24,9 +24,11 @@ Vagrant.configure("2") do |config|
     d.vm.box = "ubuntu/xenial64"
     d.vm.box_version = "20170117.0.0"
 
+    d.vm.provision "file", source: "swift-local.conf", destination: "local.conf"
     d.vm.provision "shell", inline: <<-SHELL
       apt-get update
       git clone -b stable/newton -- https://github.com/openstack-dev/devstack.git
+      mv local.conf devstack
 
       apt-get install -y libdigest-hmac-perl unzip
       wget http://s3.amazonaws.com/doc/s3-example-code/s3-curl.zip
@@ -35,6 +37,7 @@ Vagrant.configure("2") do |config|
       chmod +wx s3curl.pl
       sed -i 's/s3.amazonaws.com/172.18.161.7/' s3curl.pl
     SHELL
+
   end
 
 end
