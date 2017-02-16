@@ -8,7 +8,7 @@ resources:
   type: git
   source:
     uri: https://github.com/jinsenglin/concourse.git
-    branch: master
+    branch: trigger-of-versioned-swift-artifacts
 
 - name: version
   type: semver
