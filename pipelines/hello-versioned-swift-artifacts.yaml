@@ -116,8 +116,8 @@ jobs:
 - name: patch
   serial_groups: [version]
   plan:
-  - get version
+  - get: version
     passed: [shipit]
     trigger: true
-  - put version
+  - put: version
     params: {bump: patch, pre: rc}
