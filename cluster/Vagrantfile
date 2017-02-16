@@ -1,0 +1,33 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.define "concourse" do |d|
+    d.vm.provider "virtualbox" do |p|
+      p.cpus = 1
+      p.memory = 1024
+    end
+    d.vm.network "private_network", ip: "172.18.161.6"
+    d.vm.network "forwarded_port", guest: 8080, host: 10922
+
+    d.vm.box = "concourse/lite"
+    d.vm.box_version = "2.4.0"
+  end
+
+  config.vm.define "swift" do |d|
+    d.vm.provider "virtualbox" do |p|
+      p.cpus = 2
+      p.memory = 2048
+    end
+    d.vm.network "private_network", ip: "172.18.161.7"
+
+    d.vm.box = "ubuntu/xenial64"
+    d.vm.box_version = "20170117.0.0"
+
+    d.vm.provision "shell", inline: <<-SHELL
+      sudo apt-get update
+      sudo apt-get install libdigest-hmac-perl
+    SHELL
+  end
+
+end
