@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
       sudo apt-get update
       git clone -b stable/newton -- https://github.com/openstack-dev/devstack.git
 
-      sudo apt-get install libdigest-hmac-perl unzip
+      sudo apt-get install -y libdigest-hmac-perl unzip
       wget http://s3.amazonaws.com/doc/s3-example-code/s3-curl.zip
       unzip s3-curl.zip
       cd s3-curl
