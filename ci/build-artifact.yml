@@ -10,6 +10,9 @@ image_resource:
 inputs:
 - name: my-product
 - name: version
+
+outputs:
+- name: built-artifact
     
 run:
   path: sh
@@ -22,4 +25,6 @@ run:
     ls my-product
     ls version
     cat version/number
-    # touch my-product-*.tgz
+    cat version/version
+    #
+    #touch built-artifact/my-product-*.tgz
