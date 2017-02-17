@@ -12,7 +12,7 @@ inputs:
 - name: version
 
 outputs:
-- name: built-artifact
+- name: built-product
 
 run:
   path: sh
@@ -24,11 +24,11 @@ run:
     ls
     ls my-product
     ls version
-    ls built-artifact
+    ls built-product
     cat version/number
     cat version/version
     VERSION=$(cat version/version)
     #
-    touch built-artifact/my-product-$VERSION.tgz
+    touch built-product/my-product-$VERSION.tgz
     #
-    ls built-artifact
+    ls built-product
