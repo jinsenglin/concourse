@@ -14,3 +14,5 @@ run:
   - |
     whoami
     env
+    ls
+    # touch my-product-*.tgz
