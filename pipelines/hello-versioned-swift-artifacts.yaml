@@ -18,7 +18,7 @@ resources:
     openstack:
       container: my-product-pipeline-artifacts
       item_name: current-version 
-      identity_endpoint: http://172.18.161.7:8080
+      identity_endpoint: http://172.18.161.7:5000/v3
       region: RegionOne
       tenant_name: admin
       username: admin
