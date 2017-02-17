@@ -26,5 +26,6 @@ run:
     ls version
     cat version/number
     cat version/version
+    VERSION=$(cat version/version)
     #
-    touch built-artifact/my-product-$(cat version/number).tgz
+    touch built-artifact/my-product-$VERSION.tgz
