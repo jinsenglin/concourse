@@ -68,7 +68,8 @@ jobs:
   - task: build-artifact
     file: my-product/ci/build-artifact.yml
   - put: my-product-rc
-    params: {from: built-artifact/my-product-*.tgz}
+    params:
+      from: built-artifact/my-product-(.*).tgz
   - put: version
     params: {file: version/number}
 
