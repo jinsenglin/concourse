@@ -7,12 +7,12 @@ resources:
     openstack:
       container: hello-semver
       item_name: hello-semver
-      region: RegionOne
       identity_endpoint: http://172.18.161.7:5000/v3
-      username: admin
-      password: nomoresecret
+      region: RegionOne
       domain_name: default
       tenant_name: admin
+      username: admin
+      password: nomoresecret
 
 jobs:
 - name: hello-semver-swift
