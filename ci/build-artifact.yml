@@ -6,6 +6,10 @@ image_resource:
   source:
     repository: busybox
     tag: '1.26.2'
+
+inputs:
+- name: my-product
+- name: version
     
 run:
   path: sh
@@ -15,4 +19,7 @@ run:
     whoami
     env
     ls
+    ls my-product
+    ls version
+    cat version/number
     # touch my-product-*.tgz
