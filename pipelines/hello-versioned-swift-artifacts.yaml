@@ -20,6 +20,7 @@ resources:
       item_name: current-version 
       identity_endpoint: http://172.18.161.7:5000/v3
       region: RegionOne
+      domain_name: default
       tenant_name: admin
       username: admin
       password: nomoresecret
