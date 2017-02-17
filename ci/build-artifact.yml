@@ -27,4 +27,4 @@ run:
     cat version/number
     cat version/version
     #
-    #touch built-artifact/my-product-*.tgz
+    touch built-artifact/my-product-$(cat version/number).tgz
