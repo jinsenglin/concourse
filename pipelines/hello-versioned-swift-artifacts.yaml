@@ -68,7 +68,7 @@ jobs:
   - task: build-artifact
     file: my-product/ci/build-artifact.yml
   - put: my-product-rc
-    params: {file: built-artifact/my-product-*.tgz}
+    params: {from: built-artifact/my-product-*.tgz}
   - put: version
     params: {file: version/number}
 
@@ -98,7 +98,7 @@ jobs:
   - task: promote-to-final
     file: my-product/ci/promote-to-final.yml
   - put: my-product-final
-    params: {file: built-product/my-product-*.tgz}
+    params: {from: built-product/my-product-*.tgz}
   - put: version
     params: {file: version/number}
 
