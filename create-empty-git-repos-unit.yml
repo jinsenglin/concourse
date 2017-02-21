@@ -11,6 +11,10 @@ inputs:
 - name: concourse
 
 params:
+  key_file: concourse/id_rsa
+  ssh_config_file: concourse/ssh_config_file
+  committer_name: Jim Lin
+  committer_email: jimlintw922@gmail.com.tw
   gitlab:
   token:
   group:
@@ -28,3 +32,17 @@ run:
     curl --header "PRIVATE-TOKEN: ${token}" -X PUT "${gitlab}/api/v3/projects/${group}%2Fupstream-fork-${module}?visibility_level=10"
     curl --header "PRIVATE-TOKEN: ${token}" -X POST "${gitlab}/api/v3/projects?name=distro-module-${module}&namespace_id=${nsid}"
     curl --header "PRIVATE-TOKEN: ${token}" -X PUT "${gitlab}/api/v3/projects/${group}%2Fdistro-module-${module}?visibility_level=10"
+    #
+    mkdir ~/.ssh/
+    chmod 700 ~/.ssh/
+    cp $key_file ~/.ssh/
+    cp $ssh_config_file ~/.ssh/config
+    #
+    git clone --recursive git@gitserver:ccos/distro-module-$module.git $module
+    cd $module
+    touch .gitignore
+    git add .gitignore
+    git config user.name "$committer_name"
+    git config user.email "$committer_email"
+    git commit -m "add file .gitignore to create master branch"
+    git push origin master

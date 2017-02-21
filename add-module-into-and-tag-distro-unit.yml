@@ -13,10 +13,12 @@ inputs:
 params:
   key_file: concourse/id_rsa
   ssh_config_file: concourse/ssh_config_file
+  committer_name: Jim Lin
+  committer_email: jimlintw922@gmail.com.tw
   module: swift
   module_branch: newton
   distro_branch: newton
-  tag: newton-YYYY-MMDD-hhmm
+  tag: newton-2017-MMDD-mmhh
     
 run:
   path: sh
@@ -32,6 +34,8 @@ run:
     cd distro
     git submodule add git@gitserver:ccos/distro-module-$module.git $module
     cd $module && git checkout $src_branch && cd ..
+    git config user.name "$committer_name"
+    git config user.email "$committer_email"
     git commit -m "add submodule $module for branch $distro_branch"
     git push origin $distro_branch
     #
