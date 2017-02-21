@@ -1,3 +1,6 @@
 Host gitserver
   Hostname 172.16.100.91
   StrictHostKeyChecking no
+Host gitlab.cc.tpe
+  Hostname 172.16.100.91
+  StrictHostKeyChecking no
