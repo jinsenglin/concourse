@@ -18,7 +18,7 @@ params:
   module: swift
   module_branch: newton
   distro_branch: newton
-  tag: newton-2017-0221-1200
+  tag: newton-2017-MMDD-mmhh
     
 run:
   path: sh
