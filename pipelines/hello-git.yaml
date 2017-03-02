@@ -4,6 +4,13 @@ resources:
   source:
     uri: https://github.com/jinsenglin/concourse.git
     branch: master
+    username: jinsenglin
+    password:
+- name: my-product-feature
+  type: git
+  source:
+    uri: https://github.com/jinsenglin/concourse.git
+    branch: feature
 
 jobs:
 - name: hello-git
@@ -12,3 +19,43 @@ jobs:
     trigger: true
   - task: a-thing-that-needs-a-version
     file: my-product/unit.yml
+
+- name: hello-git-merge-and-tag
+  plan:
+  - get: my-product
+  - get: my-product-feature
+  - task: merge
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: python
+          tag: 2.7.12
+      inputs:
+      - name: my-product
+      - name: my-product-feature
+      outputs:
+      - name: some-other-repo
+      - name: some-other-dir
+      run:
+        path: sh
+        args:
+        - -exec
+        - |
+          tagfile=$PWD/some-other-dir/tag-file
+          feature=$PWD/my-product-feature
+          git clone my-product some-other-repo
+          cd some-other-repo
+          git branch -a
+          git remote add feature $feature
+          git branch -a
+          git fetch feature
+          git branch -a
+          git merge --no-edit feature/feature
+          mkdir some-other-dir
+          echo v0.0.1 > $tagfile
+  - put: my-product
+    params:
+      repository: some-other-repo
+      tag: some-other-dir/tag-file
