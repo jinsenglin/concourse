@@ -9,6 +9,7 @@ resources:
   source:
     uri: https://github.com/jinsenglin/concourse.git
     branch: trigger-of-versioned-swift-artifacts
+    disable_ci_skip: true
 
 - name: version
   type: semver
