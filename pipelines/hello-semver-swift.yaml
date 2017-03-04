@@ -22,9 +22,9 @@ jobs:
       platform: linux
       image_resource:
         type: docker-image
-        source: {repository: ubuntu}
+        source: {repository: busybox}
       run:
         path: echo
         args: ["Hello, world!"]   
   - put: version
-    params: {bump: minor}
+    params: {bump: minor, pre: dev}
